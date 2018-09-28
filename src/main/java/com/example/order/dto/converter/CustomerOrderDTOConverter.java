@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.example.order.dto.events.CustomerOrderCreatedEvent;
+import com.example.customer.order.dto.events.CustomerOrderCreatedEvent;
+import com.example.customer.order.dto.responses.CustomerOrderDTO;
+import com.example.customer.order.dto.responses.CustomerOrderLineDTO;
 import com.example.order.dto.requests.OrderCreationRequestDTO;
 import com.example.order.dto.requests.OrderLineCreationRequestDTO;
-import com.example.order.dto.responses.CustomerOrderDTO;
-import com.example.order.dto.responses.CustomerOrderLineDTO;
 
 @Component
 public class CustomerOrderDTOConverter {

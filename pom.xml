@@ -44,32 +44,32 @@
 	<dependencies>
 		<dependency>
 		    <groupId>com.example.wms</groupId>
-		    <artifactId>orderplanner-interfaces</artifactId>
-		    <version>${version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.example.wms</groupId>
-		    <artifactId>shipping-interfaces</artifactId>
+		    <artifactId>orderplanner-idd</artifactId>
 		    <version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 		    <groupId>com.example.wms</groupId>
-		    <artifactId>packing-interfaces</artifactId>
+		    <artifactId>shipping-idd</artifactId>
 		    <version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 		    <groupId>com.example.wms</groupId>
-		    <artifactId>inventory-interfaces</artifactId>
+		    <artifactId>packing-idd</artifactId>
 		    <version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 		    <groupId>com.example.wms</groupId>
-		    <artifactId>picking-interfaces</artifactId>
+		    <artifactId>inventory-idd</artifactId>
 		    <version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 		    <groupId>com.example.wms</groupId>
-		    <artifactId>customer-order-interfaces</artifactId>
+		    <artifactId>picking-idd</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.example.wms</groupId>
+		    <artifactId>customer-order-idd</artifactId>
 		    <version>0.0.1-SNAPSHOT</version>
 		</dependency>	
 		<dependency>

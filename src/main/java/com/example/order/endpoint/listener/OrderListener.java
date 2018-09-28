@@ -4,14 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
 
+import com.example.customer.order.dto.events.CustomerOrderCreatedEvent;
 import com.example.inventory.dto.events.InventoryAllocatedEvent;
 import com.example.order.dto.converter.CustomerOrderDTOConverter;
 import com.example.order.dto.converter.OrderLineStatusUpdateDTOConverter;
-import com.example.order.dto.events.CustomerOrderCreatedEvent;
 import com.example.order.dto.requests.OrderLineInfoDTO;
 import com.example.order.dto.responses.OrderDTO;
 import com.example.order.service.OrderService;
-import com.example.order.service.OrderServiceImpl.OrderLineStatus;
 import com.example.order.streams.OrderStreams;
 import com.example.packing.dto.events.PackConfirmationEvent;
 import com.example.picking.dto.events.PickConfirmationEvent;
