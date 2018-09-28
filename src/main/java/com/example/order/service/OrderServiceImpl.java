@@ -31,6 +31,7 @@ import com.example.order.dto.requests.OrderLineInfoDTO;
 import com.example.order.dto.requests.OrderUpdateRequestDTO;
 import com.example.order.dto.responses.OrderDTO;
 import com.example.order.dto.responses.OrderFulfillmentResponseDTO;
+import com.example.util.service.EventPublisher;
 
 import lombok.extern.slf4j.Slf4j;
 
