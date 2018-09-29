@@ -18,6 +18,6 @@ public interface OrderService {
 	public OrderFulfillmentResponseDTO startOrderFulfillment(OrderFulfillmentRequestDTO orderFulfillmentReq);
 	OrderDTO updateRoutingCompleted(String busName, Integer locnNbr, Long orderId) throws Exception;
 	OrderDTO updateOrderStatusToShipped(String busName, Integer locnNbr, Long orderId, String shipCarrier,
-			String shipService, String trackingNbr);
+			String shipService, String trackingNbr) throws Exception;
 	OrderDTO updateOrderLineStatusToPacked(OrderLineInfoDTO orderLineStatusUpdReq) throws Exception;
 }

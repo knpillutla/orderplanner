@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	OrderDTOConverter orderDTOConverter;
+	
+   private static final AtomicLong sequence = new AtomicLong(System.currentTimeMillis() / 1000);
+
 
 	public enum OrderRoutingStatus {
 		CREATED(0), ERROR(290), COMPLETED(190);
@@ -150,6 +154,7 @@ public class OrderServiceImpl implements OrderService {
 			Order orderEntity = orderDAO.findByBusNameAndLocnNbrAndOrderNbr(orderLineStatusUpdReq.getBusName(),
 					orderLineStatusUpdReq.getLocnNbr(), orderLineStatusUpdReq.getOrderNbr());
 			OrderLine orderLine = this.getOrderLine(orderEntity, orderLineStatusUpdReq.getId());
+			if(orderLine.getStatCode() > OrderLineStatus.ALLOCATED.getStatCode()) throw new Exception("Cannot update Order line status to Picked. OrderLine already in status >=Allocated status");
 			orderLine.setStatCode(OrderLineStatus.ALLOCATED.getStatCode());
 			orderEntity.setStatCode(OrderStatus.PARTIALLY_ALLOCATED.getStatCode());
 			orderEntity = orderDAO.save(orderEntity);
@@ -181,7 +186,7 @@ public class OrderServiceImpl implements OrderService {
 
 	public boolean areAllOrderLinesSameStatus(Order orderEntity, Integer statCode) {
 		for (OrderLine orderLine : orderEntity.getOrderLines()) {
-			if (!(orderLine.getStatCode()==statCode)) {
+			if (!(orderLine.getStatCode()>=statCode)) {
 				return false;
 			}
 		}
@@ -194,9 +199,7 @@ public class OrderServiceImpl implements OrderService {
 		List<OrderDTO> orderDTOList= new ArrayList();
 		List orderFailureDTOList= new ArrayList();
 		
-		String pattern = "yyyyMMddhhmmss";
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern); 
-		String batchNbr = simpleDateFormat.format(new Date());
+		String batchNbr = String.valueOf(sequence.incrementAndGet());
 		String userId = orderFulfillmentReq.getUserId();
 		if(orderFulfillmentReq.getOrderIdList() !=null && orderFulfillmentReq.getOrderIdList().size()>0) {
 			// created pick list based on order ids
@@ -299,7 +302,7 @@ public class OrderServiceImpl implements OrderService {
 	public OrderDTO updateRoutingCompleted(String busName, Integer locnNbr, Long orderId) throws Exception {
 		Order orderEntity = orderDAO.findByBusNameAndLocnNbrAndOrderId(busName, locnNbr, orderId);
 		orderEntity.setRoutingStatCode(OrderRoutingStatus.COMPLETED.getStatCode());
-		orderEntity.setStatCode(OrderStatus.SHIPPED.getStatCode());
+		//orderEntity.setStatCode(OrderStatus.SHIPPED.getStatCode());
 		orderDAO.save(orderEntity);
 		OrderDTO  orderDTO = orderDTOConverter.getOrderDTO(orderEntity);
 		//eventPublisher.publish(new SmallStoreOrderPlannedEvent(orderDTO));
@@ -315,6 +318,7 @@ public class OrderServiceImpl implements OrderService {
 			Order orderEntity = orderDAO.findByBusNameAndLocnNbrAndOrderId(orderLineInfo.getBusName(),
 					orderLineInfo.getLocnNbr(), orderLineInfo.getOrderId());
 			OrderLine orderLine = this.getOrderLine(orderEntity, orderLineInfo.getId());
+			if(orderLine.getStatCode() > OrderLineStatus.PICKED.getStatCode()) throw new Exception("Cannot update Order line status to Picked. OrderLine already in status >=picked status ");
 			orderLine.setStatCode(OrderLineStatus.PICKED.getStatCode());
 			orderEntity.setStatCode(OrderStatus.PARTIALLY_PICKED.getStatCode());
 			orderEntity = orderDAO.save(orderEntity);
@@ -345,6 +349,7 @@ public class OrderServiceImpl implements OrderService {
 			Order orderEntity = orderDAO.findByBusNameAndLocnNbrAndOrderId(orderLineInfo.getBusName(),
 					orderLineInfo.getLocnNbr(), orderLineInfo.getOrderId());
 			OrderLine orderLine = this.getOrderLine(orderEntity, orderLineInfo.getId());
+			if(orderLine.getStatCode() > OrderLineStatus.PACKED.getStatCode()) throw new Exception("Cannot update Order line status to Packed. OrderLine >=packed status already ");
 			orderLine.setStatCode(OrderLineStatus.PACKED.getStatCode());
 			orderEntity.setStatCode(OrderStatus.PARTIALLY_PACKED.getStatCode());
 			orderEntity = orderDAO.save(orderEntity);
@@ -368,8 +373,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
-	public OrderDTO updateOrderStatusToShipped(String busName, Integer locnNbr, Long orderId, String shipCarrier, String shipService, String trackingNbr) {
+	public OrderDTO updateOrderStatusToShipped(String busName, Integer locnNbr, Long orderId, String shipCarrier, String shipService, String trackingNbr) throws Exception{
 		Order orderEntity = orderDAO.findByBusNameAndLocnNbrAndOrderId(busName,locnNbr, orderId);
+		if(orderEntity.getStatCode() > OrderLineStatus.SHIPPED.getStatCode()) throw new Exception("Cannot update Order status to Shipped. OrderStatus is >=shipped status already ");
 		orderEntity.setStatCode(OrderStatus.SHIPPED.getStatCode());
 		orderEntity.setShipCarrier(shipCarrier);
 		orderEntity.setShipService(shipService);
