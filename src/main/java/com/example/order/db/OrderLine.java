@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -118,7 +119,11 @@ public class OrderLine  implements Serializable{
 
 	@Column(name="UPDATED_BY")
 	String updatedBy;
-
+	
+	@Version
+ 	@Column(name="VERSION")
+	Integer version; 	
+	
 	public OrderLine(Integer locnNbr, Integer orderLineNbr, String itemBrcd, Integer origOrderQty,
 			Integer orderQty, String source, String transactionName,
 			String refField1, String refField2, String userId) {
