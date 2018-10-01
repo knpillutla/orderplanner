@@ -277,7 +277,6 @@ public class OrderServiceImpl implements OrderService {
 	public OrderDTO startOrderFulfillment(String batchNbr, Order orderEntity, String userId) throws Exception{
 		orderEntity.setStatCode(OrderStatus.RELEASED.getStatCode());
 		orderEntity.setBatchNbr(batchNbr);
-		orderEntity.setUpdatedDttm(new java.util.Date());
 		orderEntity.setUpdatedBy(userId);
 		orderEntity = orderDAO.save(orderEntity);
 		OrderDTO  orderDTO = orderDTOConverter.getOrderDTO(orderEntity);
@@ -289,7 +288,6 @@ public class OrderServiceImpl implements OrderService {
 	public OrderDTO startOrderFulfillmentForSmallStore(String batchNbr, Order orderEntity, String userId) throws Exception{
 		orderEntity.setStatCode(OrderStatus.PACKED.getStatCode());
 		orderEntity.setBatchNbr(batchNbr);
-		orderEntity.setUpdatedDttm(new java.util.Date());
 		orderEntity.setUpdatedBy(userId);
 		orderEntity = orderDAO.save(orderEntity);
 		OrderDTO  orderDTO = orderDTOConverter.getOrderDTO(orderEntity);
