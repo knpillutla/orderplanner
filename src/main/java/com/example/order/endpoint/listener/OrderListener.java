@@ -1,5 +1,7 @@
 package com.example.order.endpoint.listener;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
@@ -29,62 +31,62 @@ public class OrderListener {
 	@StreamListener(target = OrderStreams.CUSTOMER_ORDERS_OUTPUT, condition = "headers['eventName']=='CustomerOrderCreatedEvent'")
 	public void handleNewOrder(CustomerOrderCreatedEvent customerOrderCreatedEvent) { // OrderCreationRequestDTO
 																						// orderCreationRequestDTO) {
-		log.info("Received CustomerOrderCreatedEvent Msg: {}" + ": at :" + new java.util.Date(),
+		log.info("Received CustomerOrderCreatedEvent Msg: {}" + ": at :" + LocalDateTime.now(),
 				customerOrderCreatedEvent);
 		long startTime = System.currentTimeMillis();
 		try {
 			orderService.createOrder(CustomerOrderDTOConverter.getOrderCreationRequestDTO(customerOrderCreatedEvent));
 			long endTime = System.currentTimeMillis();
 			log.info("Completed CustomerOrderCreatedEvent for : " + customerOrderCreatedEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
 		} catch (Exception e) {
 			e.printStackTrace();
 			long endTime = System.currentTimeMillis();
 			log.error("Error Completing CustomerOrderCreatedEvent for : " + customerOrderCreatedEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
 		}
 	}
 
 	@StreamListener(target = OrderStreams.INVENTORY_OUTPUT, condition = "headers['eventName']=='InventoryAllocatedEvent'")
 	public void handleAllocatedInventoryEvent(InventoryAllocatedEvent inventoryAllocatedEvent) {
-		log.info("Received InventoryAllocatedEvent for: {}" + ": at :" + new java.util.Date(), inventoryAllocatedEvent);
+		log.info("Received InventoryAllocatedEvent for: {}" + ": at :" + LocalDateTime.now(), inventoryAllocatedEvent);
 		long startTime = System.currentTimeMillis();
 		try {
 			orderService.updateOrderLineStatusToReserved(
 					OrderLineStatusUpdateDTOConverter.getOrderLineInfoDTO(inventoryAllocatedEvent));
 			long endTime = System.currentTimeMillis();
 			log.info("Completed InventoryAllocatedEvent for: " + inventoryAllocatedEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
 		} catch (Exception e) {
 			e.printStackTrace();
 			long endTime = System.currentTimeMillis();
 			log.error("Error Completing InventoryAllocatedEvent for: " + inventoryAllocatedEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
 		}
 	}
 
 /*	@StreamListener(target = OrderStreams.PICK_OUTPUT, condition = "headers['eventName']=='LowPickEvent'")
 	public void handleLowPickEvent(LowPickEvent lowPickEvent) {
-		log.info("Received LowPickEvent for: {}" + ": at :" + new java.util.Date(), lowPickEvent);
+		log.info("Received LowPickEvent for: {}" + ": at :" + LocalDateTime.now(), lowPickEvent);
 		long startTime = System.currentTimeMillis();
 		try {
 			OrderFulfillmentResponseDTO orderFulfillmentResponse = orderService
 					.startOrderFulfillment(LowPickEventConverter.getOrderFulfillmentRequestDTO(lowPickEvent));
 			log.info("output of LowPickEvent event:" + orderFulfillmentResponse);
 			long endTime = System.currentTimeMillis();
-			log.info("Completed LowPickEvent for: " + lowPickEvent + ": at :" + new java.util.Date() + " : total time:"
+			log.info("Completed LowPickEvent for: " + lowPickEvent + ": at :" + LocalDateTime.now() + " : total time:"
 					+ (endTime - startTime) / 1000.00 + " secs");
 		} catch (Exception e) {
 			e.printStackTrace();
 			long endTime = System.currentTimeMillis();
-			log.error("Error Completing LowPickEvent for: " + lowPickEvent + ": at :" + new java.util.Date()
+			log.error("Error Completing LowPickEvent for: " + lowPickEvent + ": at :" + LocalDateTime.now()
 					+ " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
 		}
 	}*/
 
 	@StreamListener(target = OrderStreams.SHIP_OUTPUT, condition = "headers['eventName']=='ShipRoutingCompletedEvent'")
 	public void handleShipRoutingCompletedEventEvent(ShipRoutingCompletedEvent shipRoutingCompletedEvent) {
-		log.info("Received ShipRoutingCompletedEvent for: {}" + ": at :" + new java.util.Date(),
+		log.info("Received ShipRoutingCompletedEvent for: {}" + ": at :" + LocalDateTime.now(),
 				shipRoutingCompletedEvent);
 		long startTime = System.currentTimeMillis();
 		try {
@@ -95,18 +97,18 @@ public class OrderListener {
 			log.info("output of ShipRoutingCompletedEvent event:" + orderDTO);
 			long endTime = System.currentTimeMillis();
 			log.info("Completed ShipRoutingCompletedEvent for: " + shipRoutingCompletedEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
 		} catch (Exception e) {
 			e.printStackTrace();
 			long endTime = System.currentTimeMillis();
 			log.error("Error Completing ShipRoutingCompletedEvent for: " + shipRoutingCompletedEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
 		}
 	}
 	
 	@StreamListener(target = OrderStreams.PICK_OUTPUT, condition = "headers['eventName']=='PickConfirmationEvent'")
 	public void handlePickConfirmationEvent(PickConfirmationEvent pickConfirmationEvent) {
-		log.info("Received PickConfirmationEvent for: {}" + ": at :" + new java.util.Date(),
+		log.info("Received PickConfirmationEvent for: {}" + ": at :" + LocalDateTime.now(),
 				pickConfirmationEvent);
 		long startTime = System.currentTimeMillis();
 		try {
@@ -124,18 +126,18 @@ public class OrderListener {
 			log.info("output of PickConfirmationEvent event:" + orderDTO);
 			long endTime = System.currentTimeMillis();
 			log.info("Completed PickConfirmationEvent for: " + pickConfirmationEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
 		} catch (Exception e) {
 			e.printStackTrace();
 			long endTime = System.currentTimeMillis();
 			log.error("Error Completing PickConfirmationEvent for: " + pickConfirmationEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
 		}
 	}
 	
 	@StreamListener(target = OrderStreams.PACK_OUTPUT, condition = "headers['eventName']=='PackConfirmationEvent'")
 	public void handlePackConfirmationEventEvent(PackConfirmationEvent packConfirmationEvent) {
-		log.info("Received PackConfirmationEvent for: {}" + ": at :" + new java.util.Date(),
+		log.info("Received PackConfirmationEvent for: {}" + ": at :" + LocalDateTime.now(),
 				packConfirmationEvent);
 		long startTime = System.currentTimeMillis();
 		try {
@@ -153,18 +155,18 @@ public class OrderListener {
 			log.info("output of PackConfirmationEvent event:" + orderDTO);
 			long endTime = System.currentTimeMillis();
 			log.info("Completed PackConfirmationEvent for: " + packConfirmationEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
 		} catch (Exception e) {
 			e.printStackTrace();
 			long endTime = System.currentTimeMillis();
 			log.error("Error Completing PackConfirmationEvent for: " + packConfirmationEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
 		}
 	}
 
 	@StreamListener(target = OrderStreams.SHIP_OUTPUT, condition = "headers['eventName']=='ShipConfirmationEvent'")
 	public void handleShipConfirmationEvent(ShipConfirmationEvent shipConfirmationEvent) {
-		log.info("Received ShipConfirmationEvent for: {}" + ": at :" + new java.util.Date(),
+		log.info("Received ShipConfirmationEvent for: {}" + ": at :" + LocalDateTime.now(),
 				shipConfirmationEvent);
 		long startTime = System.currentTimeMillis();
 		try {
@@ -173,12 +175,12 @@ public class OrderListener {
 			log.info("output of ShipConfirmationEvent event:" + orderDTO);
 			long endTime = System.currentTimeMillis();
 			log.info("Completed ShipConfirmationEvent for: " + shipConfirmationEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs");
 		} catch (Exception e) {
 			e.printStackTrace();
 			long endTime = System.currentTimeMillis();
 			log.error("Error Completing ShipConfirmationEvent for: " + shipConfirmationEvent + ": at :"
-					+ new java.util.Date() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
+					+ LocalDateTime.now() + " : total time:" + (endTime - startTime) / 1000.00 + " secs", e);
 		}
 	}	
 	

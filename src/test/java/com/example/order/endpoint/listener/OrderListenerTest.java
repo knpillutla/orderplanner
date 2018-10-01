@@ -42,13 +42,13 @@ public class OrderListenerTest {
 	}*/
 
 /*	public OrderCreationRequestDTO createNewOrder() {
-		Date currentDate = new java.util.Date();
+		LocalDateTime currentDate = LocalDateTime.now();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(currentDate);
 		cal.add(Calendar.DATE, 5);
-		Date shipDttm = cal.getTime();
+		LocalDateTime shipDttm = cal.getTime();
 		cal.add(Calendar.DATE, 10);
-		Date expectedDeliveryDttm = cal.getTime();
+		LocalDateTime expectedDeliveryDttm = cal.getTime();
 		Random rand = new Random();
 		int orderNbr = rand.nextInt(10000);
 		OrderCreationRequestDTO orderCreationReq = new OrderCreationRequestDTO("AMZ", 1000, "", "", "", "TEST"+orderNbr,

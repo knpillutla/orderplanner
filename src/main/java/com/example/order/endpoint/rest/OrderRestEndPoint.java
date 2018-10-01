@@ -1,6 +1,7 @@
 package com.example.order.endpoint.rest;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,7 +69,7 @@ public class OrderRestEndPoint {
 	@PutMapping("/{busName}/{locnNbr}/order")
 	public ResponseEntity createOrder(@PathVariable("busName") String busName, @PathVariable("locnNbr") Integer locnNbr, @RequestBody OrderCreationRequestDTO orderCreationReq) throws IOException {
 		long startTime = System.currentTimeMillis();
-		log.info("Received Order Create request for : " + orderCreationReq.toString() + ": at :" + new java.util.Date());
+		log.info("Received Order Create request for : " + orderCreationReq.toString() + ": at :" + LocalDateTime.now());
 		ResponseEntity resEntity = null;
 		try {
 			resEntity = ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(orderService.createOrder(orderCreationReq));
@@ -77,7 +78,7 @@ public class OrderRestEndPoint {
 			resEntity = ResponseEntity.badRequest().body(new OrderCreationFailedEvent(orderCreationReq, "Error Occured while processing Inventory Create request:" + e.getMessage()));
 		}
 		long endTime = System.currentTimeMillis();
-		log.info("Completed Order Create request for : " + orderCreationReq.toString() + ": at :" + new java.util.Date() + " : total time:" + (endTime-startTime)/1000.00 + " secs");
+		log.info("Completed Order Create request for : " + orderCreationReq.toString() + ": at :" + LocalDateTime.now() + " : total time:" + (endTime-startTime)/1000.00 + " secs");
 		return resEntity;
 	}	
 	
