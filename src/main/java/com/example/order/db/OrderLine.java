@@ -32,6 +32,9 @@ public class OrderLine  implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 
+	@Column(name="LOCN_NBR")
+	Integer locnNbr;
+
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="ORDER_ID", nullable=false)
     private Order order;
@@ -39,8 +42,6 @@ public class OrderLine  implements Serializable{
 	@Column(name="LINE_NBR")
 	Integer orderLineNbr;
 
-	@Column(name="LOCN_NBR")
-	Integer locnNbr;
 
 	@Column(name="ITEM_BRCD")
 	String itemBrcd;
