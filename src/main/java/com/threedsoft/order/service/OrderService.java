@@ -20,4 +20,5 @@ public interface OrderService {
 	OrderResourceDTO updateOrderStatusToShipped(String busName, Integer locnNbr, Long orderId, String shipCarrier,
 			String shipService, String trackingNbr) throws Exception;
 	OrderResourceDTO updateOrderLineStatusToPacked(OrderLineInfoDTO orderLineStatusUpdReq) throws Exception;
+	List<OrderResourceDTO> findByBusNameAndLocnNbr(String busName, Integer locnNbr);
 }

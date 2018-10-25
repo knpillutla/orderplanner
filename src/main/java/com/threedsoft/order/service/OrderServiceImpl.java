@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -344,5 +345,16 @@ public class OrderServiceImpl implements OrderService {
 		OrderResourceDTO orderDTO = orderDTOConverter.getOrderDTO(orderEntity);
 		eventPublisher.publish(new OrderShippedEvent(orderDTO, OrderConstants.ORDERPLANNER_SERVICE_NAME));
 		return orderDTO;
+	}
+
+	@Override
+	public List<OrderResourceDTO> findByBusNameAndLocnNbr(String busName, Integer locnNbr) {
+		PageRequest pageRequest = new PageRequest(0, 20);
+		List<Order> orderEntityList = orderDAO.findByBusNameAndLocnNbr(busName, locnNbr, pageRequest);
+		List<OrderResourceDTO> orderDTOList = new ArrayList();
+		for(Order orderEntity : orderEntityList) {
+			orderDTOList.add(orderDTOConverter.getOrderDTO(orderEntity));
+		}
+		return orderDTOList;
 	}
 }

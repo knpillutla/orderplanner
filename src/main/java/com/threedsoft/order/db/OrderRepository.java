@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.QueryHint;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
@@ -31,4 +33,8 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 	@Query("select o from Order o inner join fetch o.orderLines ol where o.busName=:busName and o.locnNbr=:locnNbr and o.statCode<=:statCode order by o.id")
 	@QueryHints(@QueryHint(name = "JDBC_MAX_ROWS", value = "10"))
 	public List<Order> findByBusNameAndLocnNbrAndStatCodeOrderByOrderId(@Param("busName") String busName, @Param("locnNbr") Integer locnNbr, @Param("statCode") Integer statCode);
+
+	@Query("select o from Order o inner join fetch o.orderLines ol where o.busName=:busName and o.locnNbr=:locnNbr order by o.id")
+	@QueryHints(@QueryHint(name = "JDBC_MAX_ROWS", value = "10"))
+	public List<Order> findByBusNameAndLocnNbr(String busName, Integer locnNbr, Pageable pageRequest);
 }
