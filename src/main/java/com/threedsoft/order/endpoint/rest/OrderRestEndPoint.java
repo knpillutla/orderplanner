@@ -65,7 +65,7 @@ public class OrderRestEndPoint {
 	}
 
 	@GetMapping("/{busName}/{locnNbr}/order")
-	public ResponseEntity getById(@PathVariable("busName") String busName, @PathVariable("locnNbr") Integer locnNbr) throws IOException {
+	public ResponseEntity getOrderList(@PathVariable("busName") String busName, @PathVariable("locnNbr") Integer locnNbr) throws IOException {
 		try {
 			return ResponseEntity.ok(orderService.findByBusNameAndLocnNbr(busName, locnNbr));
 		} catch (Exception e) {
@@ -84,7 +84,7 @@ public class OrderRestEndPoint {
 		}
 	}	
 
-	@PutMapping("/{busName}/{locnNbr}/order")
+	@PostMapping("/{busName}/{locnNbr}/order")
 	public ResponseEntity createOrder(@PathVariable("busName") String busName, @PathVariable("locnNbr") Integer locnNbr, @RequestBody OrderCreationRequestDTO orderCreationReq) throws IOException {
 		long startTime = System.currentTimeMillis();
 		log.info("Received Order Create request for : " + orderCreationReq.toString() + ": at :" + LocalDateTime.now());
@@ -113,4 +113,19 @@ public class OrderRestEndPoint {
 			return ResponseEntity.badRequest().body(new OrderFulfillmentFailedEvent(req, OrderConstants.ORDERPLANNER_SERVICE_NAME, "Error Occured while processing request:" + e.getMessage()));
 		}
 	}		
+
+/*	@PostMapping("/{busName}/summary")
+	public ResponseEntity getOrderSummary(@PathVariable("busName") String busName) throws IOException {
+		try {
+			log.info("Received order summary request:" + busName);
+			ResponseEntity resEntity =  ResponseEntity.ok(orderService.getOrderSummary(busName));
+			log.info("Completed order summary request:" + busName);
+			return resEntity;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("Error occured for order summary:", e);
+			return ResponseEntity.badRequest().body(new OrderFulfillmentFailedEvent(busName, OrderConstants.ORDERPLANNER_SERVICE_NAME, "Error Occured while processing request:" + e.getMessage()));
+		}
+	}*/		
+
 }
