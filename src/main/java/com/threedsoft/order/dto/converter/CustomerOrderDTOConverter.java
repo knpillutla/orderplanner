@@ -34,7 +34,7 @@ public class CustomerOrderDTOConverter {
 				customerOrderDTO.getBusUnit(), customerOrderDTO.getExternalBatchNbr(), customerOrderDTO.getOrderNbr(),
 				customerOrderDTO.getOrderDttm(), customerOrderDTO.getShipByDttm(),
 				customerOrderDTO.getExpectedDeliveryDttm(), customerOrderDTO.getDeliveryType(),
-				customerOrderDTO.isGift(), customerOrderDTO.getGiftMsg(), customerOrderDTO.getSource(),
+				customerOrderDTO.getIsGift(), customerOrderDTO.getGiftMsg(), customerOrderDTO.getSource(),
 				customerOrderDTO.getTransactionName(), customerOrderDTO.getRefField1(), customerOrderDTO.getRefField2(),
 				customerOrderDTO.getUpdatedBy(), orderlineDTOReqList);
 		return reqDTO;

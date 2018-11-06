@@ -35,7 +35,7 @@ public class OrderLine  implements Serializable{
 	@Column(name="LOCN_NBR")
 	Integer locnNbr;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="ORDER_ID", nullable=false)
     private Order order;
 
