@@ -50,11 +50,14 @@ public class OrderDTOConverter {
 				orderCreationRequestDTO.getTransactionName(), orderCreationRequestDTO.getRefField1(),
 				orderCreationRequestDTO.getRefField2(), orderCreationRequestDTO.getUserId());
 		List<OrderLine> orderLineList = new ArrayList();
-		for (OrderLineCreationRequestDTO orderLineCreationRequestDTO : orderCreationRequestDTO.getOrderLines()) {
-			OrderLine orderLineEntity = getOrderLineEntity(orderLineCreationRequestDTO, orderCreationRequestDTO);
-			orderLineEntity.setStatCode(OrderLineStatus.READY.getStatCode());
-			orderEntity.addOrderLine(orderLineEntity);
-			orderLineEntity.setOrder(orderEntity);
+		orderEntity.setOrderLines(orderLineList);
+		if(orderCreationRequestDTO.getOrderLines() != null) {
+			for (OrderLineCreationRequestDTO orderLineCreationRequestDTO : orderCreationRequestDTO.getOrderLines()) {
+				OrderLine orderLineEntity = getOrderLineEntity(orderLineCreationRequestDTO, orderCreationRequestDTO);
+				orderLineEntity.setStatCode(OrderLineStatus.READY.getStatCode());
+				orderEntity.addOrderLine(orderLineEntity);
+				orderLineEntity.setOrder(orderEntity);
+			}
 		}
 		orderEntity.setStatCode(OrderStatus.READY.getStatCode());
 		return orderEntity;
